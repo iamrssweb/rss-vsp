@@ -3,11 +3,11 @@
 /**
  * Register all actions and filters for the plugin
  *
- * @link       http://example.com
+ * @link       http://itjustdoes.co.uk
  * @since      1.0.0
  *
- * @package    rss_vsp
- * @subpackage rss_vsp/includes
+ * @package    Rss_Vsp
+ * @subpackage Rss_Vsp/includes
  */
 
 /**
@@ -17,11 +17,11 @@
  * the plugin, and register them with the WordPress API. Call the
  * run function to execute the list of actions and filters.
  *
- * @package    rss_vsp
- * @subpackage rss_vsp/includes
- * @author     Your Name <email@example.com>
+ * @package    Rss_Vsp
+ * @subpackage Rss_Vsp/includes
+ * @author     It Just Does <richard@itjustdoes.co.uk>
  */
-class rss_vsp_Loader {
+class Rss_Vsp_Loader {
 
 	/**
 	 * The array of actions registered with WordPress.

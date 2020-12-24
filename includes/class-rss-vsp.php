@@ -6,11 +6,11 @@
  * A class definition that includes attributes and functions used across both the
  * public-facing side of the site and the admin area.
  *
- * @link       http://example.com
+ * @link       http://itjustdoes.co.uk
  * @since      1.0.0
  *
- * @package    rss_vsp
- * @subpackage rss_vsp/includes
+ * @package    Rss_Vsp
+ * @subpackage Rss_Vsp/includes
  */
 
 /**
@@ -23,11 +23,11 @@
  * version of the plugin.
  *
  * @since      1.0.0
- * @package    rss_vsp
- * @subpackage rss_vsp/includes
- * @author     Your Name <email@example.com>
+ * @package    Rss_Vsp
+ * @subpackage Rss_Vsp/includes
+ * @author     It Just Does <richard@itjustdoes.co.uk>
  */
-class rss_vsp {
+class Rss_Vsp {
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
@@ -35,7 +35,7 @@ class rss_vsp {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      rss_vsp_Loader    $loader    Maintains and registers all hooks for the plugin.
+	 * @var      Rss_Vsp_Loader    $loader    Maintains and registers all hooks for the plugin.
 	 */
 	protected $loader;
 
@@ -44,9 +44,9 @@ class rss_vsp {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      string    $rss_vsp    The string used to uniquely identify this plugin.
+	 * @var      string    $plugin_name    The string used to uniquely identify this plugin.
 	 */
-	protected $rss_vsp;
+	protected $plugin_name;
 
 	/**
 	 * The current version of the plugin.
@@ -67,12 +67,12 @@ class rss_vsp {
 	 * @since    1.0.0
 	 */
 	public function __construct() {
-		if ( defined( 'rss_vsp_VERSION' ) ) {
-			$this->version = rss_vsp_VERSION;
+		if ( defined( 'RSS_VSP_VERSION' ) ) {
+			$this->version = RSS_VSP_VERSION;
 		} else {
 			$this->version = '1.0.0';
 		}
-		$this->rss_vsp = 'rss-vsp';
+		$this->plugin_name = 'rss-vsp';
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -86,10 +86,10 @@ class rss_vsp {
 	 *
 	 * Include the following files that make up the plugin:
 	 *
-	 * - rss_vsp_Loader. Orchestrates the hooks of the plugin.
-	 * - rss_vsp_i18n. Defines internationalization functionality.
-	 * - rss_vsp_Admin. Defines all hooks for the admin area.
-	 * - rss_vsp_Public. Defines all hooks for the public side of the site.
+	 * - Rss_Vsp_Loader. Orchestrates the hooks of the plugin.
+	 * - Rss_Vsp_i18n. Defines internationalization functionality.
+	 * - Rss_Vsp_Admin. Defines all hooks for the admin area.
+	 * - Rss_Vsp_Public. Defines all hooks for the public side of the site.
 	 *
 	 * Create an instance of the loader which will be used to register the hooks
 	 * with WordPress.
@@ -122,14 +122,14 @@ class rss_vsp {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-rss-vsp-public.php';
 
-		$this->loader = new rss_vsp_Loader();
+		$this->loader = new Rss_Vsp_Loader();
 
 	}
 
 	/**
 	 * Define the locale for this plugin for internationalization.
 	 *
-	 * Uses the rss_vsp_i18n class in order to set the domain and to register the hook
+	 * Uses the Rss_Vsp_i18n class in order to set the domain and to register the hook
 	 * with WordPress.
 	 *
 	 * @since    1.0.0
@@ -137,7 +137,7 @@ class rss_vsp {
 	 */
 	private function set_locale() {
 
-		$plugin_i18n = new rss_vsp_i18n();
+		$plugin_i18n = new Rss_Vsp_i18n();
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 
@@ -152,7 +152,7 @@ class rss_vsp {
 	 */
 	private function define_admin_hooks() {
 
-		$plugin_admin = new rss_vsp_Admin( $this->get_rss_vsp(), $this->get_version() );
+		$plugin_admin = new Rss_Vsp_Admin( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
@@ -168,7 +168,7 @@ class rss_vsp {
 	 */
 	private function define_public_hooks() {
 
-		$plugin_public = new rss_vsp_Public( $this->get_rss_vsp(), $this->get_version() );
+		$plugin_public = new Rss_Vsp_Public( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
@@ -191,15 +191,15 @@ class rss_vsp {
 	 * @since     1.0.0
 	 * @return    string    The name of the plugin.
 	 */
-	public function get_rss_vsp() {
-		return $this->rss_vsp;
+	public function get_plugin_name() {
+		return $this->plugin_name;
 	}
 
 	/**
 	 * The reference to the class that orchestrates the hooks with the plugin.
 	 *
 	 * @since     1.0.0
-	 * @return    rss_vsp_Loader    Orchestrates the hooks of the plugin.
+	 * @return    Rss_Vsp_Loader    Orchestrates the hooks of the plugin.
 	 */
 	public function get_loader() {
 		return $this->loader;

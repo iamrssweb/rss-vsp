@@ -3,11 +3,11 @@
 /**
  * Fired during plugin deactivation
  *
- * @link       http://example.com
+ * @link       http://itjustdoes.co.uk
  * @since      1.0.0
  *
- * @package    rss_vsp
- * @subpackage rss_vsp/includes
+ * @package    Rss_Vsp
+ * @subpackage Rss_Vsp/includes
  */
 
 /**
@@ -16,11 +16,11 @@
  * This class defines all code necessary to run during the plugin's deactivation.
  *
  * @since      1.0.0
- * @package    rss_vsp
- * @subpackage rss_vsp/includes
- * @author     Your Name <email@example.com>
+ * @package    Rss_Vsp
+ * @subpackage Rss_Vsp/includes
+ * @author     It Just Does <richard@itjustdoes.co.uk>
  */
-class rss_vsp_Deactivator {
+class Rss_Vsp_Deactivator {
 
 	/**
 	 * Short Description. (use period)

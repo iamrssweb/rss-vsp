@@ -5,11 +5,11 @@
  *
  * This file is used to markup the public-facing aspects of the plugin.
  *
- * @link       http://example.com
+ * @link       http://itjustdoes.co.uk
  * @since      1.0.0
  *
- * @package    rss_vsp
- * @subpackage rss_vsp/public/partials
+ * @package    Rss_Vsp
+ * @subpackage Rss_Vsp/public/partials
  */
 ?>
 

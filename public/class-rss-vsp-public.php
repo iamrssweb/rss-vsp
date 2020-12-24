@@ -3,11 +3,11 @@
 /**
  * The public-facing functionality of the plugin.
  *
- * @link       http://example.com
+ * @link       http://itjustdoes.co.uk
  * @since      1.0.0
  *
- * @package    rss_vsp
- * @subpackage rss_vsp/public
+ * @package    Rss_Vsp
+ * @subpackage Rss_Vsp/public
  */
 
 /**
@@ -16,20 +16,20 @@
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the public-facing stylesheet and JavaScript.
  *
- * @package    rss_vsp
- * @subpackage rss_vsp/public
- * @author     Your Name <email@example.com>
+ * @package    Rss_Vsp
+ * @subpackage Rss_Vsp/public
+ * @author     It Just Does <richard@itjustdoes.co.uk>
  */
-class rss_vsp_Public {
+class Rss_Vsp_Public {
 
 	/**
 	 * The ID of this plugin.
 	 *
 	 * @since    1.0.0
 	 * @access   private
-	 * @var      string    $rss_vsp    The ID of this plugin.
+	 * @var      string    $plugin_name    The ID of this plugin.
 	 */
-	private $rss_vsp;
+	private $plugin_name;
 
 	/**
 	 * The version of this plugin.
@@ -44,12 +44,12 @@ class rss_vsp_Public {
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
-	 * @param      string    $rss_vsp       The name of the plugin.
+	 * @param      string    $plugin_name       The name of the plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
-	public function __construct( $rss_vsp, $version ) {
+	public function __construct( $plugin_name, $version ) {
 
-		$this->rss_vsp = $rss_vsp;
+		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
 	}
@@ -65,15 +65,15 @@ class rss_vsp_Public {
 		 * This function is provided for demonstration purposes only.
 		 *
 		 * An instance of this class should be passed to the run() function
-		 * defined in rss_vsp_Loader as all of the hooks are defined
+		 * defined in Rss_Vsp_Loader as all of the hooks are defined
 		 * in that particular class.
 		 *
-		 * The rss_vsp_Loader will then create the relationship
+		 * The Rss_Vsp_Loader will then create the relationship
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->rss_vsp, plugin_dir_url( __FILE__ ) . 'css/rss-vsp-public.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/rss-vsp-public.css', array(), $this->version, 'all' );
 
 	}
 
@@ -88,15 +88,15 @@ class rss_vsp_Public {
 		 * This function is provided for demonstration purposes only.
 		 *
 		 * An instance of this class should be passed to the run() function
-		 * defined in rss_vsp_Loader as all of the hooks are defined
+		 * defined in Rss_Vsp_Loader as all of the hooks are defined
 		 * in that particular class.
 		 *
-		 * The rss_vsp_Loader will then create the relationship
+		 * The Rss_Vsp_Loader will then create the relationship
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->rss_vsp, plugin_dir_url( __FILE__ ) . 'js/rss-vsp-public.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/rss-vsp-public.js', array( 'jquery' ), $this->version, false );
 
 	}
 
