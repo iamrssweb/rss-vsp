@@ -174,7 +174,8 @@ class Rss_Vsp {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-		$this->loader->add_action( 'the_content', $plugin_public, 'the_content' );
+		// $this->loader->add_action( 'the_content', $plugin_public, 'the_content' );
+		$this->loader->add_shortcode( 'rss_vsp', $plugin_public, 'the_content_cb' );
 
 	}
 

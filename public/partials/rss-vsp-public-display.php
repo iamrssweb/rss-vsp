@@ -14,3 +14,5 @@
 ?>
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
+
+<!-- NOTE: shortcode functions return the content and do not print direct -->

@@ -42,14 +42,24 @@ class Rss_Vsp_Loader {
 	protected $filters;
 
 	/**
+	 * The array of shortcodes registered with WordPress.
+	 * 
+	 * @since	1.0.0
+	 * @access	protected
+	 * @var		array	$shortcodes		The shortcodes registered with WordPress, registration during plugin load.
+	 */
+	protected $shortcodes;
+
+	/**
 	 * Initialize the collections used to maintain the actions and filters.
 	 *
 	 * @since    1.0.0
 	 */
 	public function __construct() {
 
-		$this->actions = array();
-		$this->filters = array();
+		$this->actions    = array();
+		$this->filters    = array();
+		$this->shortcodes = array();
 
 	}
 
@@ -80,6 +90,20 @@ class Rss_Vsp_Loader {
 	public function add_filter( $hook, $component, $callback, $priority = 10, $accepted_args = 1 ) {
 		$this->filters = $this->add( $this->filters, $hook, $component, $callback, $priority, $accepted_args );
 	}
+
+	/**
+	 * Add a new shortcode to the collection to be registered with WordPress
+	 * 
+	 * @since   1.0.0
+	 * @param   string              $hook		        The name of the shortcode being registered: this is what the user puts into their post to call the function
+     * @param   object              $component          A reference to the instance of the object on which the shortcode is defined
+     * @param   string              $callback           The function called, within the component
+	 * @param   int                 $priority           Not Used. The priority at which the function should be fired. Default is 10.
+	 * @param   int                 $accepted_args      Not Used. The number of arguments that should be passed to the $callback. Default is 1
+	 */
+    public function add_shortcode( $hook, $component, $callback, $priority = 10, $accepted_args = 1 ){
+        $this->shortcodes = $this->add( $this->shortcodes, $hook, $component, $callback, $priority, $accepted_args);
+    }
 
 	/**
 	 * A utility function that is used to register the actions and hooks into a single
@@ -122,6 +146,10 @@ class Rss_Vsp_Loader {
 
 		foreach ( $this->actions as $hook ) {
 			add_action( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
+		}
+
+		foreach ( $this->shortcodes as $hook ) {
+			add_shortcode( $hook['hook'], array( $hook['component'], $hook['callback'] ));
 		}
 
 	}

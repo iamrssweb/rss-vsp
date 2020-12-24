@@ -101,12 +101,15 @@ class Rss_Vsp_Public {
 	}
 
 	/**
-	 * Create the public (HTML) content
+	 * Create the public (HTML) content: this is a shortcoce callback, so returns the content, it does not
+	 * create it 'directly'
+	 *
+	 * @since   1.0.0
 	 */
-	public function the_content( $post_content )
+	public function the_content_cb( $atts, $content, $shortcode_tag )
 	{
 		# code...
-		echo '<br>Here be dragons....<br>' . $post_content;
+		return '<br>To be scrolling content from identified posts<br>';
 	}
 
 }
