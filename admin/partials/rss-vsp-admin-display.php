@@ -5,11 +5,11 @@
  *
  * This file is used to markup the admin-facing aspects of the plugin.
  *
- * @link       http://example.com
+ * @link       http://itjustdoes.co.uk
  * @since      1.0.0
  *
- * @package    Plugin_Name
- * @subpackage Plugin_Name/admin/partials
+ * @package    Rss_Vsp
+ * @subpackage Rss_Vsp/admin/partials
  */
 ?>
 
