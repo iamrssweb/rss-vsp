@@ -32,6 +32,15 @@ class Rss_Vsp_Admin {
 	private $plugin_name;
 
 	/**
+	 * Unique(ish) identifier for prepending to funciton names
+	 * 
+	 * @since	1.0.0
+	 * @access	private
+	 * @var		string	$unique_name	The 'name' of this plugin
+	 */
+	private $unique_name;
+
+	/**
 	 * The version of this plugin.
 	 *
 	 * @since    1.0.0
@@ -51,7 +60,7 @@ class Rss_Vsp_Admin {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
-
+		$this->unique_name = "rss_vsp";
 	}
 
 	/**
@@ -100,4 +109,46 @@ class Rss_Vsp_Admin {
 
 	}
 
-}
+	/**
+	 * Add an options page under the Settings submenu
+	 *
+	 * @since  1.0.0
+	 */
+	public function add_options_page() {
+
+		$this->plugin_screen_hook_suffix = add_options_page(
+			__( 'RSS Vertical Scroll Post Settings', 'rss-vsp' ),
+			__( 'RSS VSP', 'rss-vsp' ),
+			'manage_options',
+			$this->plugin_name,
+			array( $this, 'display_options_page' )
+		);
+
+	}
+
+	/**
+	 * Render the options page for plugin
+	 *
+	 * @since  1.0.0
+	 */
+	public function display_options_page() {
+		include_once 'partials/rss-vsp-admin-display.php';
+	}
+
+	/**
+	 * Register all related settings of this plugin
+	 *
+	 * @since  1.0.0
+	 */
+	public function register_setting() {
+	}
+
+	/**
+	 * Rendering the settings
+	 */
+
+	 /**
+	  * Santizing the inputs before saving to the database
+	  */
+
+} /* class */

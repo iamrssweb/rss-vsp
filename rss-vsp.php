@@ -15,7 +15,7 @@
  * @wordpress-plugin
  * Plugin Name:       rss-vsp
  * Plugin URI:        https://github.com/iamrssweb/rss-vsp
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Description:       Vertical Scroll Post - selected category of posts scrolling contents, N recent posts.
  * Version:           1.0.0
  * Author:            It Just Does
  * Author URI:        http://itjustdoes.co.uk

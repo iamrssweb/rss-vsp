@@ -100,4 +100,13 @@ class Rss_Vsp_Public {
 
 	}
 
+	/**
+	 * Create the public (HTML) content
+	 */
+	public function the_content( $post_content )
+	{
+		# code...
+		echo '<br>Here be dragons....<br>' . $post_content;
+	}
+
 }
