@@ -157,7 +157,7 @@ class Rss_Vsp_Admin {
             __( 'Category of posts to display', $this->plugin_name ),   // title of the field
             array( $this, $this->unique_name . '_category_render' ),    // callback to render
             $this->plugin_name,                                         // settings page
-            $this->unique_name, '_general',                             // section
+            $this->unique_name . '_general',                             // section
             array( 'label_for' => $this->unique_name . '_category')     // arguments to pass to the callback
         );
 
@@ -190,7 +190,6 @@ class Rss_Vsp_Admin {
      * @since   1.0.0
      */
     public function rss_vsp_category_render() {
-        echo 'Top of category render ';
         wp_dropdown_categories(
             array(
                 'hide_empty'   => 0,
@@ -200,7 +199,6 @@ class Rss_Vsp_Admin {
                 'hierarchical' => true,
             )
         );
-        echo 'In category_render.';
     }
 
 	 /**
