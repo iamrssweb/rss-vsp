@@ -135,6 +135,46 @@ class Rss_Vsp_Admin {
 		include_once 'partials/rss-vsp-admin-display.php';
 	}
 
+    
+    /**
+     * Build a checkbox field
+     */
+    private function build_checkbox_field( $args ) {
+        if ( isset($args['field_var'] ) ) {
+            $field_var = $args['field_var'];
+        } else {
+            echo 'No field variable in arguments';
+            return;
+        }
+        if ( isset($args['label'] ) ) {
+            $label_text = $args['label'];
+        } else {
+            $label_text = '';
+        }
+        if ( isset($args['field_title'] ) ) {
+            $field_title = $args['field_title'];
+        } else {
+            $field_title = '';
+        }
+
+        add_settings_field(
+            $field_var,
+            __( $field_title, $this->plugin_name ),
+            array( $this, $this->unique_name . '_checkbox_render' ),
+            $this->plugin_name,
+            $this->unique_name . '_general',
+            array(
+                'field_var' => $field_var,
+                'label'     => $label_text,
+            )
+        );
+
+        register_setting(
+            $this->plugin_name,
+            $field_var
+        );
+    }
+
 	/**
 	 * Register all related settings of this plugin
 	 *
@@ -157,7 +197,7 @@ class Rss_Vsp_Admin {
             __( 'Category of posts to display', $this->plugin_name ),   // title of the field
             array( $this, $this->unique_name . '_category_render' ),    // callback to render
             $this->plugin_name,                                         // settings page
-            $this->unique_name . '_general',                             // section
+            $this->unique_name . '_general',                            // section
             array( 'label_for' => $this->unique_name . '_category')     // arguments to pass to the callback
         );
 
@@ -166,11 +206,27 @@ class Rss_Vsp_Admin {
             $this->unique_name . '_category'
         );
         /* Post content to display */
+        $this->build_checkbox_field( array (
+            'field_var' => $this->unique_nane . '_content_paragraph',
+            'label'     => 'Paragraph',
+            'field_title' => 'Contents to display',
+        ));
+
+        $this->build_checkbox_field( array (
+            'field_var' => $this->unique_nane . '_content_header',
+            'label'     => 'Header',
+        ));
+        
+        $this->build_checkbox_field( array (
+            'field_var' => $this->unique_nane . '_content_image',
+            'label'     => 'Image',
+        ));
+        
         /* N most recent posts */
         /* Lines at once to display */
         /* Scrolling speed in seconds (what does this mean: update rate per line?) */
 
-	}
+    }
 
 	/**
 	 * Rendering the settings
@@ -199,6 +255,31 @@ class Rss_Vsp_Admin {
                 'hierarchical' => true,
             )
         );
+    }
+
+    /**
+     * Render a checkbox field
+     *
+     * @since   1.0.0
+     * @param   string  field_var       name of the checkbox associated with a label
+     * @param   string  label           text for the label
+     */
+    public function rss_vsp_checkbox_render( $args ) {
+        if ( isset($args['field_var']) ) {
+            $field_var = $args['field_var'];
+        } else {
+            echo 'No field variable in arguments';
+            return;
+        }
+        if ( isset($args['label']) ) {
+            $label_text = $args['label'];
+        } else {
+            $label_text = '';
+        }
+
+        echo '<label for="' . $field_var . '">';
+        echo '<input name="' . $field_var . '" type="checkbox" id="checkbox_' . $field_var . '" value="1" ' . checked( '1', get_option( $field_var) ) . '/>';
+        echo $label_text  . '</label><br />';
     }
 
 	 /**
