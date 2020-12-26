@@ -135,46 +135,6 @@ class Rss_Vsp_Admin {
 		include_once 'partials/rss-vsp-admin-display.php';
 	}
 
-    
-    /**
-     * Build a checkbox field
-     */
-    private function build_checkbox_field( $args ) {
-        if ( isset($args['field_var'] ) ) {
-            $field_var = $args['field_var'];
-        } else {
-            echo 'No field variable in arguments';
-            return;
-        }
-        if ( isset($args['label'] ) ) {
-            $label_text = $args['label'];
-        } else {
-            $label_text = '';
-        }
-        if ( isset($args['field_title'] ) ) {
-            $field_title = $args['field_title'];
-        } else {
-            $field_title = '';
-        }
-
-        add_settings_field(
-            $field_var,
-            __( $field_title, $this->plugin_name ),
-            array( $this, $this->unique_name . '_checkbox_render' ),
-            $this->plugin_name,
-            $this->unique_name . '_general',
-            array(
-                'field_var' => $field_var,
-                'label'     => $label_text,
-            )
-        );
-
-        register_setting(
-            $this->plugin_name,
-            $field_var
-        );
-    }
-
 	/**
 	 * Register all related settings of this plugin
 	 *
@@ -206,26 +166,97 @@ class Rss_Vsp_Admin {
             $this->unique_name . '_category'
         );
         /* Post content to display */
-        $this->build_checkbox_field( array (
-            'field_var' => $this->unique_nane . '_content_paragraph',
-            'label'     => 'Paragraph',
-            'field_title' => 'Contents to display',
+        $this->build_field( array (
+            'field_var'     => $this->unique_nane . '_content_paragraph',
+            'label_text'    => 'Paragraph',
+            'field_title'   => 'Contents to display',
+            'type'          => 'checkbox',
         ));
 
-        $this->build_checkbox_field( array (
-            'field_var' => $this->unique_nane . '_content_header',
-            'label'     => 'Header',
+        $this->build_field( array (
+            'field_var'     => $this->unique_nane . '_content_header',
+            'label_text'    => 'Header',
+            'type'          => 'checkbox',
         ));
         
-        $this->build_checkbox_field( array (
-            'field_var' => $this->unique_nane . '_content_image',
-            'label'     => 'Image',
+        $this->build_field( array (
+            'field_var'     => $this->unique_nane . '_content_image',
+            'label_text'    => 'Image',
+            'type'          => 'checkbox',
         ));
         
         /* N most recent posts */
+        $this->build_field( array (
+            'field_var'     => $this->unique_nane . '_mostrecent',
+            'label_text'    => '',
+            'field_title'   => 'Number most recent posts to display',
+            'type'          => 'wholenumber',
+        ));
         /* Lines at once to display */
+        $this->build_field( array (
+            'field_var'     => $this->unique_nane . '_lines',
+            'label_text'    => '',
+            'field_title'   => 'Number lines displayed',
+            'type'          => 'wholenumber',
+        ));
         /* Scrolling speed in seconds (what does this mean: update rate per line?) */
+        $this->build_field( array (
+            'field_var'     => $this->unique_nane . '_speed',
+            'label_text'    => ' seconds',
+            'field_title'   => 'Scrolling speed',
+            'type'          => 'wholenumber',
+        ));
 
+    }
+
+    /**
+     * Build a field in the admin page, also register the field
+     */
+    private function build_field( $args ) {
+        if ( isset( $args[ 'type' ] ) ) {
+            $type = $args[ 'type' ];
+            if ( !in_array( $type , array( 
+                'checkbox', 
+                'wholenumber',
+                ) ) ) {
+                echo 'No type ' . $type . ' in build_field';
+                return;
+            }
+        }
+        if ( isset( $args[ 'field_var' ] ) ) {
+            $field_var = $args[ 'field_var' ];
+        } else {
+            echo 'No field variable in arguments';
+            return;
+        }
+        if ( isset( $args[ 'label_text' ] ) ) {
+            $label_text = $args[ 'label_text' ];
+        } else {
+            $label_text = '';
+        }
+        if ( isset( $args[ 'field_title' ] ) ) {
+            $field_title = $args[ 'field_title' ];
+        } else {
+            $field_title = '';
+        }
+
+        add_settings_field(
+            $field_var,
+            __( $field_title, $this->plugin_name ),
+            array( $this, $this->unique_name . '_' . $type . '_render' ),
+            $this->plugin_name,
+            $this->unique_name . '_general',
+            array(
+                'field_var'     => $field_var,
+                'label_text'    => $label_text,
+                'type'          => $type,
+            )
+        );
+
+        register_setting(
+            $this->plugin_name,
+            $field_var
+        );
     }
 
 	/**
@@ -265,21 +296,47 @@ class Rss_Vsp_Admin {
      * @param   string  label           text for the label
      */
     public function rss_vsp_checkbox_render( $args ) {
-        if ( isset($args['field_var']) ) {
-            $field_var = $args['field_var'];
+        if ( isset( $args[ 'field_var' ] ) ) {
+            $field_var = $args[ 'field_var' ];
         } else {
             echo 'No field variable in arguments';
             return;
         }
-        if ( isset($args['label']) ) {
-            $label_text = $args['label'];
+        if ( isset( $args[ 'label_text' ] ) ) {
+            $label_text = $args[ 'label_text' ];
         } else {
             $label_text = '';
         }
 
         echo '<label for="' . $field_var . '">';
-        echo '<input name="' . $field_var . '" type="checkbox" id="checkbox_' . $field_var . '" value="1" ' . checked( '1', get_option( $field_var) ) . '/>';
-        echo $label_text  . '</label><br />';
+        echo '<input name="' . $field_var . '" type="checkbox" id="' . $field_var . '" value="1" ' . checked( '1', get_option( $field_var), $echo=false ) . '/>';
+        echo $label_text  . '</label>';
+    }
+
+    /**
+     * Render a whole-number field
+     * 
+     * @since   1.0.0
+     * @param   string  field_var       name of the number field
+     * @param   string  label           text for the label
+     */
+
+    public function rss_vsp_wholenumber_render( $args ) {
+        if ( isset( $args[ 'field_var' ] ) ) {
+            $field_var = $args[ 'field_var' ];
+        } else {
+            echo 'No field variable in arguments';
+            return;
+        }
+        if ( isset( $args[ 'label_text' ] ) ) {
+            $label_text = $args[ 'label_text' ];
+        } else {
+            $label_text = '';
+        }
+
+        echo '<label for="' . $field_var . '">';
+        echo '<input name="' . $field_var . '" type="number" id="' . $field_var . '" min="0" step="1" value="'. get_option( $field_var) . '"/>';
+        echo $label_text  . '</label>';
     }
 
 	 /**

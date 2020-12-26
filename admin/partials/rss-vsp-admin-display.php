@@ -21,6 +21,7 @@
         <?php
             settings_fields( $this->plugin_name );
             do_settings_sections( $this->plugin_name );
+            ?><br /><?php
             submit_button();
         ?>
     </form>
