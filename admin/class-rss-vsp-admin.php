@@ -38,7 +38,7 @@ class Rss_Vsp_Admin {
 	 * @access	private
 	 * @var		string	$unique_name	The 'name' of this plugin
 	 */
-	private $unique_name;
+	private $unique_name = 'rss_vsp';
 
 	/**
 	 * The version of this plugin.
@@ -47,7 +47,16 @@ class Rss_Vsp_Admin {
 	 * @access   private
 	 * @var      string    $version    The current version of this plugin.
 	 */
-	private $version;
+    private $version;
+    
+    /**
+     * The options that the user can set on the admin page
+     * 
+     * @since   1.0.0
+     * @access  private
+     * @var     array   options        The options
+     */
+    private $options;
 
 	/**
 	 * Initialize the class and set its properties.
@@ -60,7 +69,15 @@ class Rss_Vsp_Admin {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
-		$this->unique_name = "rss_vsp";
+        $this->options = array(
+            'category'      => '1',
+            'paragraph'     => '0',
+            'header'        => '0',
+            'image'         => '0',
+            'mostrecent'    => '3',
+            'lines'         => '6',
+            'speed'         => '15',
+        );
 	}
 
 	/**
@@ -132,6 +149,7 @@ class Rss_Vsp_Admin {
 	 * @since  1.0.0
 	 */
 	public function display_options_page() {
+        $this->options = get_option( $this->unique_name . '_options' );
 		include_once 'partials/rss-vsp-admin-display.php';
 	}
 
@@ -147,7 +165,7 @@ class Rss_Vsp_Admin {
 			$this->unique_name . '_general',                            // tag ID (CSS) - slug name
 			__( 'General', $this->plugin_name ),                        // title of the section
 			array( $this, $this->unique_name . '_general_render' ),     // callback to render
-			$this->plugin_name                                          // page
+			$this->plugin_name                                          // settings page
 		);
 
         /* Fields */
@@ -161,52 +179,54 @@ class Rss_Vsp_Admin {
             array( 'label_for' => $this->unique_name . '_category')     // arguments to pass to the callback
         );
 
-        register_setting(
-            $this->plugin_name,
-            $this->unique_name . '_category'
-        );
         /* Post content to display */
         $this->build_field( array (
-            'field_var'     => $this->unique_nane . '_content_paragraph',
+            'field_var'     => 'paragraph',
             'label_text'    => 'Paragraph',
             'field_title'   => 'Contents to display',
             'type'          => 'checkbox',
         ));
 
         $this->build_field( array (
-            'field_var'     => $this->unique_nane . '_content_header',
+            'field_var'     => 'header',
             'label_text'    => 'Header',
             'type'          => 'checkbox',
         ));
         
         $this->build_field( array (
-            'field_var'     => $this->unique_nane . '_content_image',
+            'field_var'     => 'image',
             'label_text'    => 'Image',
             'type'          => 'checkbox',
         ));
         
         /* N most recent posts */
         $this->build_field( array (
-            'field_var'     => $this->unique_nane . '_mostrecent',
+            'field_var'     => 'mostrecent',
             'label_text'    => '',
             'field_title'   => 'Number most recent posts to display',
             'type'          => 'wholenumber',
         ));
         /* Lines at once to display */
         $this->build_field( array (
-            'field_var'     => $this->unique_nane . '_lines',
+            'field_var'     => 'lines',
             'label_text'    => '',
             'field_title'   => 'Number lines displayed',
             'type'          => 'wholenumber',
         ));
         /* Scrolling speed in seconds (what does this mean: update rate per line?) */
         $this->build_field( array (
-            'field_var'     => $this->unique_nane . '_speed',
+            'field_var'     => 'speed',
             'label_text'    => ' seconds',
             'field_title'   => 'Scrolling speed',
             'type'          => 'wholenumber',
         ));
 
+        /* register the settings with WordPress */
+        register_setting(
+            $this->plugin_name,
+            $this->unique_name . '_options'
+            //, sanitizer
+        );
     }
 
     /**
@@ -241,21 +261,16 @@ class Rss_Vsp_Admin {
         }
 
         add_settings_field(
-            $field_var,
-            __( $field_title, $this->plugin_name ),
-            array( $this, $this->unique_name . '_' . $type . '_render' ),
-            $this->plugin_name,
-            $this->unique_name . '_general',
-            array(
+            $field_var,                                                     // ID
+            __( $field_title, $this->plugin_name ),                         // Title
+            array( $this, $this->unique_name . '_' . $type . '_render' ),   // Callback
+            $this->plugin_name,                                             // Page
+            $this->unique_name . '_general',                                // Section
+            array(                                                          // Args to pass to callback
                 'field_var'     => $field_var,
                 'label_text'    => $label_text,
                 'type'          => $type,
             )
-        );
-
-        register_setting(
-            $this->plugin_name,
-            $field_var
         );
     }
 
@@ -277,12 +292,18 @@ class Rss_Vsp_Admin {
      * @since   1.0.0
      */
     public function rss_vsp_category_render() {
+        $this->options = get_option( $this->unique_name . '_options');
+        if ( $this->options && isset( $this->options['category'] ) ) {
+            $selected = $this->options['category'];
+        } else {
+            $selected = 0;
+        }
         wp_dropdown_categories(
             array(
-                'hide_empty'   => 0,
-                'name'         => $this->unique_name . '_category',
+                'hide_empty'   => 0,                                                    // show all categaories, even if not used in a post
+                'name'         => $this->unique_name . '_options[category]',
                 'orderby'      => 'name',
-                'selected'     => get_option( $this->unique_name . '_category' ),
+                'selected'     => $selected,
                 'hierarchical' => true,
             )
         );
@@ -309,7 +330,7 @@ class Rss_Vsp_Admin {
         }
 
         echo '<label for="' . $field_var . '">';
-        echo '<input name="' . $field_var . '" type="checkbox" id="' . $field_var . '" value="1" ' . checked( '1', get_option( $field_var), $echo=false ) . '/>';
+        echo '<input name="' . $this->unique_name . '_options[' . $field_var . ']" type="checkbox" id="' . $field_var . '" value="1" ' . checked( isset( $this->options[$field_var] ), true, false ) . '/>';
         echo $label_text  . '</label>';
     }
 
@@ -335,7 +356,13 @@ class Rss_Vsp_Admin {
         }
 
         echo '<label for="' . $field_var . '">';
-        echo '<input name="' . $field_var . '" type="number" id="' . $field_var . '" min="0" step="1" value="'. get_option( $field_var) . '"/>';
+        echo '<input name="' . $this->unique_name . '_options[' . $field_var . ']" type="number" id="' . $field_var . '" min="0" step="1" value="';
+        if ( isset( $this->options[$field_var]) ) {
+            echo $this->options[$field_var];
+        } else {
+            echo '0';
+        }
+        echo '"/>';
         echo $label_text  . '</label>';
     }
 
