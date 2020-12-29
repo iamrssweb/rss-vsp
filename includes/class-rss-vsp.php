@@ -154,10 +154,10 @@ class Rss_Vsp {
 
 		$plugin_admin = new Rss_Vsp_Admin( $this->get_plugin_name(), $this->get_version() );
 
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_options_page' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'register_setting' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
 	}
 
@@ -172,10 +172,10 @@ class Rss_Vsp {
 
 		$plugin_public = new Rss_Vsp_Public( $this->get_plugin_name(), $this->get_version() );
 
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 		// $this->loader->add_action( 'the_content', $plugin_public, 'the_content' );
 		$this->loader->add_shortcode( 'rss_vsp', $plugin_public, 'the_content_cb' );
+		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
+		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
 	}
 
